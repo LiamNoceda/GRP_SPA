@@ -21,41 +21,10 @@
             color: #ffffff;
         }
     </style>
-    <script class="struct pages">
-        let username = "GrapeUser";
-        let bio = "Разработчик в экосистеме Grape";
-        let avatar = "";
-        let cnt = "<p style='color: #5a6578; font-style: italic;'>Контента пока нет...</p>";
-
-        const spaceroom = {
-            path: '#space',
-            component: () => 
-            `
-            <div class="spaceroom">
-                <h1 class="avatar name">
-                    <img class="space avatar" src="${avatar}" alt="avatar">
-                    <p class="FullInfo">${username}</p>
-                </h1>
-                <h2>
-                    <p class="optionBio">${bio}</p>
-                </h2>
-
-                <aside class="rltmctn">
-                    <textarea id="add text" row="3" placeholder="What are you thinking"></textarea>
-                    <div id="cnt">${cnt}</div>
-                </aside>
-            </div>
-            `
-        };
-
-        const friendsspatial = {
-            path: '#friends',
-            component: () => `<div><h1 style="padding: 20px;">Friends List Node</h1></div>`
-        };
-
+    <script type="module" class="structure-spatial">
         const routes = {
-            '#space': spaceroom,
-            '#friends': friendsspatial
+            '#space': { path: './sp/space.js', title: 'Spatial Room' },
+            '#friends': { path: './sp/friends.js', title: 'Friends' }
         };
 
         async function route() {
@@ -64,24 +33,35 @@
                 return;
             }
 
-            const hashs = window.location.hash;
-            const view = routes[hashs];
+            const crHash = window.location.hash;
             const mainroom = document.getElementById('spatial');
+            const rInfo = routes[crHash];
 
-            if (view) {
-                mainroom.innerHTML = view.component();
+            if (rInfo) {
+                mainroom.innerHTML = `<div class="skeleton-loader">Syncing Grape room...</div>`;
+                try {
+                    document.title = rInfo.title;
+                    const pageModule = await import(rInfo.path);
+                    mainroom.innerHTML = pageModule.render();
+                } catch (error) {
+                    mainroom.innerHTML = `<div style="color: #ff5252;">Failed to load spatial component.</div>`;
+                    console.error("Router error:", error);
+                }
+            } else {
+                mainroom.innerHTML = `<div style="padding: 20px;">404 - Not found</div>`;
+                document.title = "404 - Not Found";
             }
 
             document.querySelectorAll('.nav-left a').forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === hashs) {
+                if (link.getAttribute('href') === crHash) {
                     link.classList.add('active');
                 }
             });
         }
 
         window.addEventListener('hashchange', route);
-        window.addEventListener('load', route);
+        window.addEventListener('DOMContentLoaded', route);
     </script>
 </head>
 <body>
