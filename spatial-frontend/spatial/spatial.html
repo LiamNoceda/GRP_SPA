@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRAPE ECOSYSTEM</title>
+    <style class="global-spatial">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+
+        html, body, .grape-spatial {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1c2340 0%, #171b30 60%, #2a1f4d 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            color: #ffffff;
+        }
+    </style>
+    <script class="struct pages">
+        let username = "GrapeUser";
+        let bio = "Разработчик в экосистеме Grape";
+        let avatar = "";
+        let cnt = "<p style='color: #5a6578; font-style: italic;'>Контента пока нет...</p>";
+
+        const spaceroom = {
+            path: '#space',
+            component: () => 
+            `
+            <div class="spaceroom">
+                <h1 class="avatar name">
+                    <img class="space avatar" src="${avatar}" alt="avatar">
+                    <p class="FullInfo">${username}</p>
+                </h1>
+                <h2>
+                    <p class="optionBio">${bio}</p>
+                </h2>
+
+                <aside class="rltmctn">
+                    <textarea id="add text" row="3" placeholder="What are you thinking"></textarea>
+                    <div id="cnt">${cnt}</div>
+                </aside>
+            </div>
+            `
+        };
+
+        const friendsspatial = {
+            path: '#friends',
+            component: () => `<div><h1 style="padding: 20px;">Friends List Node</h1></div>`
+        };
+
+        const routes = {
+            '#space': spaceroom,
+            '#friends': friendsspatial
+        };
+
+        async function route() {
+            if (!window.location.hash) {
+                window.location.hash = '#space';
+                return;
+            }
+
+            const hashs = window.location.hash;
+            const view = routes[hashs];
+            const mainroom = document.getElementById('spatial');
+
+            if (view) {
+                mainroom.innerHTML = view.component();
+            }
+
+            document.querySelectorAll('.nav-left a').forEach(linl => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === hashs) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('hashchange', route);
+        window.addEventListener('load', route);
+    </script>
+</head>
+<body>
+   <div class="grape-spatial">
+        <header class="header">
+            <div class="logo">
+                <img src="" alt="Grape Logo" onerror="this.src=''">
+            </div>
+            <div class="logoname">GRAPE</div>
+        </header>
+        <aside class="sider-left">
+            <nav class="nav-left">
+                <ul class="left">
+                    <li>
+                        <a href="#space">spatial room</a>
+                    </li>
+                    <li>
+                        <a href="#friends">friends</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <main id="spatial"></main>
+   </div>
+</body>
+</html>
