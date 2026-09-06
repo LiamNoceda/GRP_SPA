@@ -72,7 +72,7 @@
                 mainroom.innerHTML = view.component();
             }
 
-            document.querySelectorAll('.nav-left a').forEach(linl => {
+            document.querySelectorAll('.nav-left a').forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === hashs) {
                     link.classList.add('active');
@@ -90,7 +90,7 @@
             <div class="logo">
                 <img src="" alt="Grape Logo" onerror="this.src=''">
             </div>
-            <div class="logoname">GRAPE</div>
+            <div class="logoname"><p>GRAPE</p></div>
         </header>
         <aside class="sider-left">
             <nav class="nav-left">
